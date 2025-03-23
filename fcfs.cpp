@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <sstream>
 
 using namespace std;
 
@@ -12,22 +13,25 @@ struct Process {
     int waiting_time, turnaround_time, completion_time;
 };
 
-// Function to read process data from a file
 vector<Process> readProcesses(const string& filename) {
     vector<Process> processes;
-    ifstream file("processes.txt"); 
+    ifstream file(filename); 
     if (!file) {
         cerr << "Error opening file!" << endl;
         exit(1);
     }
-    string header;
-    getline(file, header); // Skip header line
 
-    Process p;
-    while (file >> p.pid >> p.arrival_time >> p.burst_time >> p.priority) {
-        processes.push_back(p);
+    string line;
+    getline(file, line); // Skip the header
+
+    while (getline(file, line)) {
+        istringstream iss(line);
+        Process p;
+        if (iss >> p.pid >> p.arrival_time >> p.burst_time >> p.priority) {
+            processes.push_back(p);
+        }
     }
-    
+
     file.close();
     return processes;
 }

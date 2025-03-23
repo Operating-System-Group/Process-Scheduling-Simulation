@@ -23,7 +23,7 @@ public class PriorityScheduling {
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
             br.readLine(); // Skip header
-            while ((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {if (line.trim().isEmpty() || line.contains("PID")) continue; // skip header or empty lines
                 String[] parts = line.split("\\s+");
                 processes.add(new Process(
                     Integer.parseInt(parts[0]), 
